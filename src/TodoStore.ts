@@ -19,7 +19,7 @@ export default class TodoStore {
   todos: TodoItem[] = [];
 
   constructor() {
-    makeObservable({
+    makeObservable(this, {
       todos: observable, // 변하지않는 state
       addTodo: action, // action (함수)
       toggelTodo: action,
@@ -51,15 +51,21 @@ export default class TodoStore {
   }
 
   get status() {
+    // 완료된 일정 갯수와
+    // 진행중인 일정 갯수의 초기값을 정의합니다.
     let completed = 0,
       remaining = 0;
     this.todos.forEach((todo) => {
+      // 일정을 추가할때마다 배열의 갯수가 늘어나고 그만큼 반복문을 실행합니다.
       if (todo.completed) {
+        // 만약에 배열에 성공여부 true가 존재하면 completed를 +1 합니다.
         completed++;
       } else {
+        // 반대로 배열에 성공여부의 true 갯수가 존재하지 않거나 하나 모자르면 -1합니다.
         remaining++;
       }
     });
+    // 즉, completed와 remaining은 비례하여 나타나 출력합니다.
     return { completed, remaining };
   }
 }
